@@ -17,7 +17,7 @@ class Table extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        currentPage: window.location.pathname.replace("/", "") || 1,
+        currentPage: window.location.pathname.replace(process.env.REACT_APP_TABLE_BASE, "") || 1,
         search: "",
         sort: {
           enabled: false,
@@ -141,7 +141,6 @@ class Table extends React.Component {
         enabled = true;
       };
       
-      console.log(enabled, ascending)
       this.setState({
         sort: {
             enabled,

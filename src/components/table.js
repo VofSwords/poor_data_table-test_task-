@@ -17,7 +17,7 @@ class Table extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        currentPage: window.location.pathname.replace(process.env.REACT_APP_TABLE_BASE, "") || 1,
+        currentPage: window.location.pathname.replace(new RegExp(`${process.env.REACT_APP_TABLE_BASE}\/?`, "i"), "") || 1,
         search: "",
         sort: {
           enabled: false,
@@ -26,6 +26,7 @@ class Table extends React.Component {
         },
         fields: props.fields || Object.keys(props.data[0] || {}).reduce((acc, key) => (acc[key] = key, acc), {})
       };
+      console.log(this.state.currentPage, process.env.REACT_APP_TABLE_BASE)
     };
     
     createPage(num, data) {

@@ -16,8 +16,9 @@ add search to links
 class Table extends React.Component {
     constructor(props) {
       super(props);
+      const startPage = window.location.pathname.replace(new RegExp(`${process.env.REACT_APP_TABLE_BASE}\/?`, "i"), "");
       this.state = {
-        currentPage: window.location.pathname.replace(new RegExp(`${process.env.REACT_APP_TABLE_BASE}\/?`, "i"), "") || 1,
+        currentPage: isNaN(startPage) ? 1 : startPage,
         search: "",
         sort: {
           enabled: false,

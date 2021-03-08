@@ -11,6 +11,7 @@ const hist = useHistory();
         hist.push("/");
         props.handleSearch(e.target.value);
       }}
+      className="nav-search-inline"
     />
   );
 };

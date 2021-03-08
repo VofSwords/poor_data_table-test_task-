@@ -5,7 +5,7 @@ class Page extends React.Component {
       const fields = Object.keys(this.props.fields);
       const headers = fields.map((key, i) => (
         <th key={i}>
-          <span onClick={() => this.props.sort(key)}>
+          <span onClick={e => this.props.sort(key, e.target)} >
             {this.props.fields[key]}
           </span>
         </th>

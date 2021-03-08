@@ -16,9 +16,9 @@ add search to links
 class Table extends React.Component {
     constructor(props) {
       super(props);
-      const startPage = window.location.pathname.replace(new RegExp(`${process.env.REACT_APP_TABLE_BASE}\/?`, "i"), "");
+      const startPage = window.location.pathname.replace(new RegExp(`${process.env.REACT_APP_TABLE_BASE}/?`, "i"), "");
       this.state = {
-        currentPage: isNaN(startPage) ? 1 : startPage,
+        currentPage: (!startPage || isNaN(startPage))  ? 1 : startPage,
         search: "",
         sort: {
           enabled: false,
@@ -27,7 +27,6 @@ class Table extends React.Component {
         },
         fields: props.fields || Object.keys(props.data[0] || {}).reduce((acc, key) => (acc[key] = key, acc), {})
       };
-      console.log(this.state.currentPage, process.env.REACT_APP_TABLE_BASE)
     };
     
     createPage(num, data) {
@@ -35,7 +34,7 @@ class Table extends React.Component {
         <Page
             fields={this.state.fields}
             data={data.slice(num * 50, 50 * (num + 1))}
-            sort={(field) => this.handleSort(field)}
+            sort={(...args) => this.handleSort(...args)}
         />
       )
     };
@@ -55,8 +54,8 @@ class Table extends React.Component {
       
       if (pageCount > 9) {
         const lastLink = this.createLink(pageCount);
-        const placeHolder1 = <li key={-2}>...</li>;
-        const placeHolder2 = <li key={-3}>...</li>;
+        const placeHolder1 = <li key={-2}><span>...</span></li>;
+        const placeHolder2 = <li key={-3}><span>...</span></li>;
         if (currentPage < 6) {
           length = 6;
           startIndex = 2;
@@ -129,19 +128,26 @@ class Table extends React.Component {
       });
     };
     
-    handleSort(field) {
+    handleSort(field, target) {
       let {enabled, ascending, field: oldField} = this.state.sort;
+      let className;
       if (field === oldField) {
         if (ascending) {
+          className = "sort-descending";
           ascending = false;
         } else {
           field = "";
           enabled = false;
+          className = "";
         };
       } else {
         ascending = true;
         enabled = true;
+        className = "sort-ascending";
       };
+
+      target.classList.remove("sort-ascending", "sort-descending");
+      target.className = className;
       
       this.setState({
         sort: {
@@ -169,6 +175,7 @@ class Table extends React.Component {
       )) : <Route path="*"> No matches for {this.state.search} </Route>;
       return (
         <div id="table">
+        <div>
           <Router basename={process.env.REACT_APP_TABLE_BASE}>
             <div id="nav">
               <nav>
@@ -176,18 +183,19 @@ class Table extends React.Component {
                   {pageLinks}
                 </ul>
               </nav>
-              <Search handleSearch={(search) => this.handleSearch(search)} />
-              <Switch>
-                {pages}
-                <Route exact path="/">
-                  {this.createPage(0, data)}
-                </Route>
-                <Route>
-                  Nothing to display
-                </Route>
-              </Switch>
             </div>
+            <Search handleSearch={(search) => this.handleSearch(search)} />
+            <Switch>
+              {pages}
+              <Route exact path="/">
+                {this.createPage(0, data)}
+              </Route>
+              <Route>
+                Nothing to display
+              </Route>
+            </Switch>
           </Router>
+        </div>
         </div>
       );
       

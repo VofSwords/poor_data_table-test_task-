@@ -5,7 +5,7 @@ class Page extends React.Component {
       const fields = Object.keys(this.props.fields);
       const headers = fields.map((key, i) => (
         <th key={i}>
-          <span onClick={e => this.props.sort(key, e.target)} >
+          <span onClick={e => this.props.sort(key, e)} >
             {this.props.fields[key]}
           </span>
         </th>
@@ -18,7 +18,7 @@ class Page extends React.Component {
         </td>
       ))}
           </tr>
-      ))
+      ));
       return (
         <table>
           <thead>

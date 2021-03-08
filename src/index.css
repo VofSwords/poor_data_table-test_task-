@@ -51,6 +51,9 @@ code {
 #table table thead {
   text-align: center;
 }
+#table th span {
+  cursor: pointer;
+}
 .sort-ascending::after {
   content: " ▲";
   font-size: 10px;

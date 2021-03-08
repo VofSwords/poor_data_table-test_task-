@@ -128,7 +128,7 @@ class Table extends React.Component {
       });
     };
     
-    handleSort(field, target) {
+    handleSort(field, event) {
       let {enabled, ascending, field: oldField} = this.state.sort;
       let className;
       if (field === oldField) {
@@ -146,8 +146,8 @@ class Table extends React.Component {
         className = "sort-ascending";
       };
 
-      target.classList.remove("sort-ascending", "sort-descending");
-      target.className = className;
+      Array.from(document.querySelectorAll("#table tr span")).forEach(element => element.classList.remove("sort-ascending", "sort-descending"));
+      event.target.className = className;
       
       this.setState({
         sort: {
